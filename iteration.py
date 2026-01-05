@@ -56,14 +56,13 @@ for i in range(n_iterations):
             plt.hlines(y = function(x, c), xmin = x, xmax= function(x, c))
         x = function(x, c)
     else:
-        #iterate vertically
+        # iterate vertically
         if x > function(x, c):
             up = False
         if (up is True):
             plt.vlines(x = x, ymin = function(x, c), ymax= x)
         else:
             plt.vlines(x = x, ymin = x, ymax= function(x, c))
-
 #iterateAndDraw(seed, c)
 #plt.show(block=False)
 plt.show()

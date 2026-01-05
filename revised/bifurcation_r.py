@@ -12,6 +12,13 @@ import numpy as np
 
 # first though, optimizing my method!
 
+# establishing the figure
+fig = plt.figure()
+ax = plt.axes()
+
+ax.grid()
+ax.set_facecolor('black')
+
 c_range = np.linspace(-2,-0.25,50)
 
 def function(x, c):
@@ -39,12 +46,8 @@ for c in c_range:
             y = function(x, c)
             i = i + 1
             if (y < 2 and y > -2):
-                plt.scatter(c, y, c='black', marker='.')
+                ax.scatter(c, y, c='white', marker='.')
             else:
                 break
 
-plt.grid()
 plt.show()
-
-
-'''ax.set_facecolor('#94B560')'''
