@@ -3,7 +3,7 @@ import numpy as np
 
 # this will basically do what iteration.py does for n_iteration of like 100 for a range of c values
 
-c_range = np.linspace(-2,-0.25,50)
+c_range = np.linspace(-2,-0.25,500)
 
 # i want to make a scatter plot
 
@@ -35,7 +35,7 @@ for c in c_range:
     if (y != 123):
         # more iterations :P
         i = 0
-        while (i < 50):
+        while (i < 500):
             x = y
             y = function(x, c)
             i = i + 1
