@@ -3,112 +3,111 @@ from matplotlib import pyplot as plt
 
 # i want to program a generic cellular automata that generates to the terminal
 
-# there are 21 bits in a "bitstring"
-bitstring = np.zeros(21)
+# this must be even, for now
+n_iterations = 40
+
+# doing away with the idea of bitstrings...
+bitstring = np.zeros(n_iterations + 1)
+
+# i'll represent an uncolored bit as a zero and colored as 1
+center_index = int(n_iterations / 2)
+bitstring[center_index] = 1
+
 #print(bitstring)
 
-# for now, i'll represent an uncolored bit as a zero and colored as 1
-
-bitstring[10] = 1
-#print(bitstring)
-
-def getNeighborhood(bitstring, index):
+def getNeighborhood(bitstring, index, iteration):
     # edge cases
-    if (index == 0):
-        neighborhood = (bitstring[20], bitstring[index], bitstring[index + 1])
-    elif (index == 20):
+
+    #if (index == center_index - iteration - 1):
+    #    neighborhood = (bitstring[center_index + iteration - 1], bitstring[center_index + iteration], bitstring[index + 1])
+
+    #elif (index == center_index + iteration + 1):
+    #    neighborhood = (bitstring[index - 1], bitstring[center_index - iteration], bitstring[center_index - iteration + 1])
+
+    if (index == center_index - iteration):
+        neighborhood = (bitstring[center_index + iteration], bitstring[index], bitstring[index + 1])
+
+    elif (index == center_index + iteration):
+        neighborhood = (bitstring[index - 1], bitstring[index], bitstring[center_index - iteration])
+
+    elif (index == len(bitstring) - 1):
         neighborhood = (bitstring[index - 1], bitstring[index], bitstring[0])
+
     else:
         neighborhood = (bitstring[index - 1], bitstring[index], bitstring[index + 1])
+
     return neighborhood
 
-# each bit is updated depending on the values next to it
-# so, i'll iterate through each bit and update it based on
-# the rules for the near bits
-
-# for now, i have the rules integrated into this main loop,
-# but i wonder if there's a better way to do this...
-
-# this could be user configurable
-n_iterations = 30
-
 i = 0
-new_bitstring = np.zeros(21)
+new_bitstring = np.zeros(n_iterations + 1)
 iteration = 0
 
 fig = plt.figure()
 ax = plt.axes()
 ax.set_facecolor('black')
-x = [0, 1, 1, 0]
+#ax.set_xlim(0, n_iterations)
+#ax.set_ylim(0, n_iterations + 1)
+
+
+x = [center_index, center_index + 1, center_index + 1, center_index]
 y = [n_iterations, n_iterations,
 n_iterations - 1, n_iterations - 1]
-ax.fill(x, y, color='black')
+ax.fill(x, y, color='white')
 
+def plot(i, color):
+    if (color == 1):
+        x = [i, i+1, i+1, i]
+        y = [n_iterations - iteration, n_iterations - iteration,
+             n_iterations - iteration - 1, n_iterations - iteration - 1]
+        ax.fill(x, y, color='white')
+    else:
+        x = [i, i+1, i+1, i]
+        y = [n_iterations - iteration, n_iterations - iteration,
+             n_iterations - iteration - 1, n_iterations - iteration - 1]
+        ax.fill(x, y, color='black')
+
+# main loop
 while (iteration < n_iterations):
-    new_bitstring = np.zeros(21)
-
+#for iteration in range(n_iterations):
+    new_bitstring = np.zeros(n_iterations + 1)
+    iteration = iteration + 1
     # now i'll add some more fun rules
     for i in range(len(bitstring)):
-        if (getNeighborhood(bitstring, i) == (0,0,0)):
+        if (getNeighborhood(bitstring, i, iteration) == (0,0,0)):
             new_bitstring[i] = 0
-            #ax.scatter(i, n_iterations - iteration, color = 'black', marker='s', s=1000)
-            x = [i, i+1, i+1, i]
-            y = [n_iterations - iteration, n_iterations - iteration,
-                 n_iterations - iteration - 1, n_iterations - iteration - 1]
-            ax.fill(x, y, color='black')
-        if (getNeighborhood(bitstring, i) == (1,0,0)):
-            new_bitstring[i] = 1
-            #ax.scatter(i, n_iterations - iteration, color = 'black', marker='s', s=1000)
-            x = [i, i+1, i+1, i]
-            y = [n_iterations - iteration, n_iterations - iteration,
-                 n_iterations - iteration - 1, n_iterations - iteration - 1]
-            ax.fill(x, y, color='white')
-        if (getNeighborhood(bitstring, i) == (0,1,0)):
-            new_bitstring[i] = 0
-            #ax.scatter(i, n_iterations - iteration, color = 'black', marker='s', s=1000)
-            x = [i, i+1, i+1, i]
-            y = [n_iterations - iteration, n_iterations - iteration,
-                 n_iterations - iteration - 1, n_iterations - iteration - 1]
-            ax.fill(x, y, color='black')
-        if (getNeighborhood(bitstring, i) == (0,0,1)):
-            new_bitstring[i] = 1
-            #ax.scatter(i, n_iterations - iteration, color = 'white', marker='s', s=1000)
-            x = [i, i+1, i+1, i]
-            y = [n_iterations - iteration, n_iterations - iteration,
-                 n_iterations - iteration - 1, n_iterations - iteration - 1]
-            ax.fill(x, y, color='white')
-        if (getNeighborhood(bitstring, i) == (1,1,0)):
-            new_bitstring[i] = 1
-            #ax.scatter(i, n_iterations - iteration, color = 'black', marker='s', s=1000)
-            x = [i, i+1, i+1, i]
-            y = [n_iterations - iteration, n_iterations - iteration,
-                 n_iterations - iteration - 1, n_iterations - iteration - 1]
-            ax.fill(x, y, color='white')
-        if (getNeighborhood(bitstring, i) == (0,1,1)):
-            new_bitstring[i] = 1
-            #ax.scatter(i, n_iterations - iteration, color = 'black', marker='s', s=1000)
-            x = [i, i+1, i+1, i]
-            y = [n_iterations - iteration, n_iterations - iteration,
-                 n_iterations - iteration - 1, n_iterations - iteration - 1]
-            ax.fill(x, y, color='white')
-        if (getNeighborhood(bitstring, i) == (1,0,1)):
-            new_bitstring[i] = 0
-            #ax.scatter(i, n_iterations - iteration, color = 'black', marker='s', s=1000)
-            x = [i, i+1, i+1, i]
-            y = [n_iterations - iteration, n_iterations - iteration,
-                 n_iterations - iteration - 1, n_iterations - iteration - 1]
-            ax.fill(x, y, color='black')
-        if (getNeighborhood(bitstring, i) == (1,1,1)):
-            new_bitstring[i] = 1
-            #ax.scatter(i, n_iterations - iteration, color = 'black', marker='s', s=1000)
-            x = [i, i+1, i+1, i]
-            y = [n_iterations - iteration, n_iterations - iteration,
-                 n_iterations - iteration - 1, n_iterations - iteration - 1]
-            ax.fill(x, y, color='white')
 
+        if (getNeighborhood(bitstring, i, iteration) == (1,0,0)):
+            new_bitstring[i] = 1
+
+        if (getNeighborhood(bitstring, i, iteration) == (0,1,0)):
+            new_bitstring[i] = 1
+
+        if (getNeighborhood(bitstring, i, iteration) == (0,0,1)):
+            new_bitstring[i] = 1
+
+        if (getNeighborhood(bitstring, i, iteration) == (1,1,0)):
+            new_bitstring[i] = 0
+
+        if (getNeighborhood(bitstring, i, iteration) == (0,1,1)):
+            new_bitstring[i] = 1
+
+        if (getNeighborhood(bitstring, i, iteration) == (1,0,1)):
+            new_bitstring[i] = 0
+
+        if (getNeighborhood(bitstring, i, iteration) == (1,1,1)):
+            new_bitstring[i] = 0
+            
+        plot(i, new_bitstring[i])
+        #print(center_index - iteration)
 
     bitstring = new_bitstring
-    iteration = iteration + 1
+    #iteration = iteration + 1
+    #print(iteration)
+    print(f"iteration: {iteration}")
     print(new_bitstring)
 
-plt.show()
+save = True
+if (save == True):
+    plt.savefig("./rule_30/something.png")
+
+plt.show() 
