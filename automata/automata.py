@@ -4,14 +4,18 @@ from matplotlib import pyplot as plt
 # i want to program a generic cellular automata that generates to the terminal
 
 # this must be even, for now
-n_iterations = 40
+n_iterations = 300
 
 # doing away with the idea of bitstrings...
-bitstring = np.zeros(n_iterations + 1)
+bitstring = np.zeros(2*(n_iterations + 1))
+bitstring = np.random.randint(0,2,2*(n_iterations + 1))
+bitstring = np.ones(2*(n_iterations + 1))
+
 
 # i'll represent an uncolored bit as a zero and colored as 1
-center_index = int(n_iterations / 2)
+center_index = int(n_iterations + 1)
 bitstring[center_index] = 1
+bitstring[center_index] = 0
 
 #print(bitstring)
 
@@ -39,7 +43,7 @@ def getNeighborhood(bitstring, index, iteration):
     return neighborhood
 
 i = 0
-new_bitstring = np.zeros(n_iterations + 1)
+new_bitstring = np.zeros(2*(n_iterations + 1))
 iteration = 0
 
 fig = plt.figure()
@@ -69,30 +73,30 @@ def plot(i, color):
 # main loop
 while (iteration < n_iterations):
 #for iteration in range(n_iterations):
-    new_bitstring = np.zeros(n_iterations + 1)
+    new_bitstring = np.zeros(2*(n_iterations + 1))
     iteration = iteration + 1
     # now i'll add some more fun rules
     for i in range(len(bitstring)):
         if (getNeighborhood(bitstring, i, iteration) == (0,0,0)):
-            new_bitstring[i] = 0
+            new_bitstring[i] = 1
 
         if (getNeighborhood(bitstring, i, iteration) == (1,0,0)):
-            new_bitstring[i] = 1
+            new_bitstring[i] = 0
 
         if (getNeighborhood(bitstring, i, iteration) == (0,1,0)):
             new_bitstring[i] = 1
 
         if (getNeighborhood(bitstring, i, iteration) == (0,0,1)):
-            new_bitstring[i] = 1
+            new_bitstring[i] = 0
 
         if (getNeighborhood(bitstring, i, iteration) == (1,1,0)):
-            new_bitstring[i] = 0
+            new_bitstring[i] = 1
 
         if (getNeighborhood(bitstring, i, iteration) == (0,1,1)):
             new_bitstring[i] = 1
 
         if (getNeighborhood(bitstring, i, iteration) == (1,0,1)):
-            new_bitstring[i] = 0
+            new_bitstring[i] = 1
 
         if (getNeighborhood(bitstring, i, iteration) == (1,1,1)):
             new_bitstring[i] = 0
@@ -107,7 +111,8 @@ while (iteration < n_iterations):
     print(new_bitstring)
 
 save = True
+#save = False
 if (save == True):
-    plt.savefig("./rule_30/something.png")
+    plt.savefig("./rule_73/single_300.png")
 
 plt.show() 
