@@ -1,3 +1,0 @@
-./pendula.py --filebase data/noisy --cycles 7000 --frequency 3.4 --amplitude 0.048 --dt 0.05 --noisestep 1 --noise 0.01 --outcycle 2000
-32 0.050000 3.400000 0.048000 0.000000 0.125229 -18.331500 0.000000
-runtime: 179.714929
